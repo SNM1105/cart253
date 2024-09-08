@@ -16,4 +16,5 @@ function setup() {
 function draw() {
     //every frame. Within parentheses are arguments that specify colour
     background(255, 100, 100);
+    rect(200, 80, 240, 320);
 }
