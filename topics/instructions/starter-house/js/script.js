@@ -1,6 +1,6 @@
 /**
  * My House
- * Pippin Barr
+ * Simon M.
  * 
  * Draws a house with shapes.
  * 
