@@ -20,7 +20,7 @@ let sun = {
         red: 255,
         green: 255,
         blue: 0
-    }
+    },
     x: 500,
     y: 70,
     size: 100
