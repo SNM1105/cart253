@@ -74,7 +74,7 @@ function checkMouse() {
             bug.velocity.y = 15; // Run away!
         }
         // Now check if the user managed to click on the bug
-            // First find out if the mouse if over the bug's body 
+            // First find out if the mouse is over the bug's body 
             const mouseToBugDistance = dist(mouseX, mouseY, bug.x, bug.y);
             const mouseOverBug = mouseToBugDistance < bug.w / 2;
             // Check if the mouse is pressed over the bug
