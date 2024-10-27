@@ -30,6 +30,10 @@ draw()
     drawRoad
     drawOffroad
     drawGameOver
+    drawFinish
+    drawCarDeath
+    drawCarWin
+    drawNextLevel
 
 drawCar()
     drawCarBody
@@ -50,5 +54,24 @@ drawCarHeadlights()
     2 yellow circles on the front of the car
 
 moveCar ()
+set frog to WASD keys
+W = up
+A = left
+S = down
+D = right
 
+drawCarDeath
+    if car overlaps with offroad,
+    car velocity slows down to 0 in .75 seconds,
+    and death screen comes up, offering player to retry
+
+drawCarWin
+    If car makes it to the finish line,
+    car velocity slow down to 0 in .5 seconds
+    and win screen comes up, offering player to go to the next level
+
+drawNext Level
+    if the player plays a new level
+    the level counter goes up
+    the draw road configuration randomizes and creates a new track
 ```

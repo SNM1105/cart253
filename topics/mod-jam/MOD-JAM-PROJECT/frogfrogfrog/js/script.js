@@ -1,13 +1,16 @@
 /**
- * Frogfrogfrog
- * Pippin Barr
+ * The Archer
+ * Simon Medalssy
  * 
- * A game of catching flies with your frog-tongue
+ * A game of shooting down enemies with a bow before their pillage your village!
  * 
  * Instructions:
- * - Move the frog with your mouse
- * - Click to launch the tongue
- * - Catch flies
+ * - Move the Archer with your mouse
+ * - Click to shoot your bow
+ * - Eliminate as many enemies as possible
+ * - Don't run out of your 5 lives
+ * - Get the highest score possible before you die!
+ * - This is real life. There is no winning. You WILL die.
  * 
  * Made with p5
  * https://p5js.org/
@@ -15,8 +18,8 @@
 
 "use strict";
 
-// Our frog
-const frog = {
+// Our Archer
+const archer = {
     // The frog's body has a position and size
     body: {
         x: 320,
