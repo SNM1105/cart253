@@ -1,4 +1,4 @@
-# Pseudocode for Frogfrogfrog
+# Pseudocode for The Archer
 
 ```
 Archer
@@ -41,5 +41,17 @@ draw()
     drawArcher // draw archer's body as a yellow circle. If arrow's state is no longer idle, draw a brown rectangle and silver triangle at the
                   tip at the current arrow's X and Y position.
     moveArcher // set archer's X to the mouse's x position.
-    moveArrow // set arrow's X to the archer's body's X. If arrow's state in outbound (not idle),
+    moveArrow // set arrow's X to the archer's body's X. If arrow's state in outbound (not idle), decrease the arrow's Y by the arrow's speed.
+                 Once it's less than or equal to 0, set the state back to idle.
+    arrowOverlap // Calculate distance between each enemy and the arrow. If there is an overlap between the arrow and the enemy, reset the
+                    enemy's X to 0, randomize the Y between 50 and 300, set the arrow back to idle, increase the score by one.
+    drawScore // Draw the text "Score", followed by the current score (position 500,30)
+    CheckGameOver // If the lives are less than or equal to 0, stop the game loop, draw "Game Over" text at the center of the canvas, and draw
+                     "Press R to Restart" below the "Game Over" text.
+
+Event Handlers:
+    If r is pressed, restart game
+    if game is reset, set lives from 0 to 5, recreate enemy array, reset arrow back to the archer's body, set arrow's state back to idle,
+    restart the game loop
+
 ```
