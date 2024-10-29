@@ -31,17 +31,22 @@ function draw() {
  * Draws a Trisolarian sun
  */
 function drawSun(x, y, size) {
-    // Calculate the stroke weight of the sun based on
-    // the distance of the mouse position
-    const minWeight = 20;
-    const maxWeight = 1;
-    let d = dist(mouseX, mouseY, x, y);
-    let weight = map(d, 0, width, minWeight, maxWeight);
-
+    let weight = calculatesStrokeWeight(x,y);
     push();
     strokeWeight(weight);
     stroke("#ffff00");
     fill("#f99736");
     ellipse(x, y, size);
     pop();
+}
+
+function calculatesStrokeWeight (x,y) {
+    // Calculate the stroke weight of the sun based on
+    // the distance of the mouse position
+    const minWeight = 20;
+    const maxWeight = 1;
+    let d = dist(mouseX, mouseY, x, y);
+    let result = map(d, 0, width, minWeight, maxWeight);
+
+    return result;
 }
