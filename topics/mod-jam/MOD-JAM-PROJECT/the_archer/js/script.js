@@ -22,10 +22,10 @@
 const archer = {
     body: {
         x: 320,
-        y: 520,
+        y: 420,
         size: 50
     },
-//His arrow
+    //The arrow
     arrow: {
         x: 320,
         y: 400,
@@ -37,8 +37,10 @@ const archer = {
 };
 
 let enemies = [];
+//score starts at 0
 let score = 0;
-let lived = 5;
+//player gets 5 lives
+let lives = 5;
 let gameRunning = true;
 
 function setup() {
@@ -61,13 +63,13 @@ function draw() {
     }
 }
 
-//creates the 2 types of enemies
 function createEnemies() {
+    //draws the enemies
     enemies = [];
     //3 regular enemies
-    for (let i=0; i<3; i++ ) {
+    for (let i = 0; i < 3; i++) {
         enemies.push({
-            x:0,
+            x: 0,
             y: random(50, 300),
             size: 30,
             speed: 1.5,
@@ -75,20 +77,21 @@ function createEnemies() {
         });
     }
     //2 strong enemies
-    for (let i=0; i<2; i++) {
+    for (let i = 0; i < 2; i++) {
         enemies.push({
-            x:0,
-            y:random(50,300),
-            size:50,
-            speed:1.2,
-            type:'strong',
-            hits:0
+            x: 0,
+            y: random(50, 300),
+            size: 50,
+            speed: 1.2,
+            type: 'strong',
+            hits: 0
         });
     }
 }
 
 function drawBackground() {
-    background('#188720') //grassy green
+    //draws a grassy green background
+    background('#188720');
 }
 
 function drawVillage() {
@@ -97,65 +100,67 @@ function drawVillage() {
 
     //fence posts
     strokeWeight(12);
-    stroke('#6Brr23');
-    for (let y = 0; y < height; y += 60){
-        line(fenceX,y,fenceX,y+60);
+    //dark brown
+    stroke('#6B4423');
+    for (let y = 0; y < height; y += 60) {
+        line(fenceX, y, fenceX, y + 60);
     }
     //fence planks
     strokeWeight(6);
-    stroke('8B6B4F');
+    //light brown
+    stroke('#8B6B4F');
     for (let y = 15; y < height; y += 60) {
-        line(fenceX-20, y, fenceX+20, y);
-        line(fenceX-20, y+30, fenceX+20, y+30);
+        line(fenceX - 20, y, fenceX + 20, y);
+        line(fenceX - 20, y + 30, fenceX + 20, y + 30);
     }
-    //Create multiple huts for the village, behind the fence
-    drawHut(620, 20, 60)
-    drawHut(630, 80, 60)
-    drawHut(615, 140, 60)
-    drawHut(620, 200, 60)
-    drawHut(630, 260, 60)
-    drawHut(615, 320, 60)
-    drawHut(620, 380, 60)
-    drawHut(630, 440, 60)
+    //Draws multiple huts
+    drawHut(615, -40, 60);
+    drawHut(620, 20, 60);
+    drawHut(630, 80, 60);
+    drawHut(615, 140, 60);
+    drawHut(620, 200, 60);
+    drawHut(630, 260, 60);
+    drawHut(615, 320, 60);
+    drawHut(620, 380, 60);
+    drawHut(630, 440, 60);
+    drawHut(615, 500, 60);
 }
 
-function drawHut(x,y,size) {
+function drawHut(x, y, size) {
     noStroke();
     //body
     fill('#D2691E');
-    rect(x,y,size,size*0.8);
+    rect(x, y, size, size * 0.8);
 
     //roof
     fill('#8B4513');
-    triangle(x-10, y, x+size/2, y-30, x+size+10,y);
+    triangle(x - 10, y, x + size / 2, y - 30, x + size + 10, y);
 
     //window
     fill('#87CEEB');
     rect(x + size * 0.3, y + size * 0.2, size * 0.4, size * 0.3);
 }
 
-//draws the enemies
 function drawEnemies() {
     enemies.forEach(enemy => {
         if (enemy.type === 'normal') {
             fill('red');
-        }
-        else {
+        } else {
             fill('#8B0000');
         }
         noStroke();
         ellipse(enemy.x, enemy.y, enemy.size);
     });
 }
-//moves the enemies
+
 function moveEnemies() {
     enemies.forEach(enemy => {
         enemy.x += enemy.speed;
         //if an enemy makes it to the fence
-        if (enemy.x >= 500) {
+        if (enemy.x >= 570) {
             //their position resets to a new location
             enemy.x = 0;
-            enemy.y = random(50,300);
+            enemy.y = random(50, 300);
             //and the player loses a life
             lives--;
         }
@@ -164,55 +169,53 @@ function moveEnemies() {
 
 function drawArcher() {
     fill('yellow');
-    ellipse(archer.body.x, archer.body.y, archer.body.size)
+    ellipse(archer.body.x, archer.body.y, archer.body.size);
 
-//draw arrow if not idle
-if (archer.arrow.state !== 'idle') {
-    fill('#8B4513');
-    rect(archer.arrow.x - archer.arrow.width/2,
-        archer.arrow.y - archer.arrow.length,
-        archer.arrow.width,
-        archer.arrow.length);
-    //draw arrow tip
-    fill('silver');
-    triangle(archer.arrow.x - 8, archer.arrow.y - archer.arrow.length,
-        archer.arrow.x + 8, archer.arrow.y - archer.arrow.length,
-        archer.arrow.x, archer.arrow.y - archer.arrow.length - 15);
+    //draw arrow if not idle
+    if (archer.arrow.state !== 'idle') {
+        fill('#8B4513');
+        rect(archer.arrow.x - archer.arrow.width / 2,
+            archer.arrow.y - archer.arrow.length,
+            archer.arrow.width,
+            archer.arrow.length);
+        //draw arrow tip
+        fill('silver');
+        triangle(archer.arrow.x - 8, archer.arrow.y - archer.arrow.length,
+            archer.arrow.x + 8, archer.arrow.y - archer.arrow.length,
+            archer.arrow.x, archer.arrow.y - archer.arrow.length - 15);
     }
 }
-//moves the archer
+
 function moveArcher() {
     //archer's x is tied to the mouse
     archer.body.x = constrain(mouseX, 25, width - 25);
 }
-//moves the arrow
+
 function moveArrow() {
-    if (archer.arrow.state === 'idle'){
+    if (archer.arrow.state === 'idle') {
         archer.arrow.x = archer.body.x;
         archer.arrow.y = archer.body.y;
-    }
-    else {
+    } else {
         archer.arrow.y -= archer.arrow.speed;
         if (archer.arrow.y <= 0) {
             archer.arrow.state = 'idle';
         }
     }
 }
-//checks if arrow is overlapping with enemies
+
 function arrowOverlap() {
     enemies.forEach(enemy => {
-        let d = dist(archer.arrow.x, archer.arrow.y. enemy.x, enemy.y);
-        if (d < (enemy.size/2 + 5)&& archer.arrow.state !== 'idle') {
+        let d = dist(archer.arrow.x, archer.arrow.y, enemy.x, enemy.y);
+        if (d < (enemy.size / 2 + 5) && archer.arrow.state !== 'idle') {
             if (enemy.type === 'strong') {
                 enemy.hits++;
-                if (enemy.hots >=2) {
+                if (enemy.hits >= 2) {
                     enemy.x = 0;
-                    enemy.y = random(50,300);
+                    enemy.y = random(50, 300);
                     enemy.hits = 0;
                     score++;
                 }
-            }
-            else {
+            } else {
                 enemy.x = 0;
                 enemy.y = random(50, 300);
                 score++;
@@ -220,4 +223,45 @@ function arrowOverlap() {
             archer.arrow.state = 'idle';
         }
     });
+}
+
+function drawScore() {
+    fill(0);
+    textSize(24);
+    textStyle(BOLD);
+    text(`Score: ${score}`, 500, 30);
+    text(`Lives: ${lives}`, 500, 60);
+    textStyle(NORMAL);
+}
+
+function checkGameOver() {
+    if (lives <= 0) {
+        gameRunning = false;
+        textAlign(CENTER);
+        textSize(48);
+        fill(0);
+        textStyle(BOLD);
+        text('Game Over', width / 2, height / 2);
+        textSize(24);
+        text('Press R to Restart', width / 2, height / 2 + 40);
+        textStyle(NORMAL);
+        noLoop();
+    }
+}
+
+function keyPressed() {
+    if (key === 'r' || key === 'R') {
+        lives = 5;
+        score = 0;
+        createEnemies();
+        archer.arrow.state = 'idle';
+        gameRunning = true;
+        loop();
+    }
+}
+
+function mousePressed() {
+    if (archer.arrow.state === 'idle' && gameRunning) {
+        archer.arrow.state = 'outbound';
+    }
 }
