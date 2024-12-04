@@ -2,7 +2,8 @@
 
 Simon Medalssy
 
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online]
+https://snm1105.github.io/cart253/topics/variation%20jam/limited%20moves/
 
 ## Description
 

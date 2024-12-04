@@ -2,7 +2,8 @@
 
 Simon Medalssy
 
-[View this project online](URL_FOR_THE_RUNNING_PROJECT)
+[View this project online]
+https://snm1105.github.io/cart253/topics/variation%20jam/base_game/
 
 ## Description
 
@@ -18,7 +19,7 @@ Time Crunch: The player must make it to the end of the maze before the 10 second
 
 Limited: Same concemt as Time Crunch, but instead of having a 10 second timer, the player must make it to the exit in under 10 moves.
 
-Node Run: The player must step on 3 yellow nodes to unlock the exit. There is a time limit, and if the player doesn't make it to the exit on time, they lose and must either restart the level, or gfo to the next one.
+Node Run: The player must step on 3 yellow nodes to unlock the exit. There is a time limit, and if the player doesn't make it to the exit on time, they lose and must either restart the level, or go to the next one.
 
 For the first 2 game modes, the way tha the maps are generated makes it so not every level is actually solvable. To combat this, there is a "Skip Level" button that lets you skip the level and play a new one.
 
