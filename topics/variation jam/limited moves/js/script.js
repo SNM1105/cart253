@@ -1,3 +1,4 @@
+// Global Variables
 let maze;
 let player;
 let playerPosition;
@@ -15,10 +16,11 @@ function setup() {
   createCanvas(600, 600);
   cellSize = 30;
   movesLeft = movesLimit;
-  generateNewLevel();
+  generateNewLevel(); // Initialize the maze and level data.
   textSize(16);
   textAlign(RIGHT, TOP);
 
+  // Set up skip and restart buttons.
   skipButton = createButton('Skip Level');
   skipButton.mousePressed(skipLevel);
   skipButton.style('background-color', '#008000');
@@ -29,16 +31,16 @@ function setup() {
   restartButton.style('background-color', '#008000');
   restartButton.style('color', 'black');
 
-  positionButtons();
+  positionButtons(); // Position UI buttons.
 
   playerPosition = createVector(player.x * cellSize, player.y * cellSize);
 }
 
 function draw() {
   if (showInstructions) {
-    displayInstructions();
+    displayInstructions(); // Display instructions screen at start.
   } else {
-    drawGame();
+    drawGame(); // Render the game state.
   }
 }
 
@@ -63,11 +65,13 @@ function displayInstructions() {
 function drawGame() {
   background(0);
 
+  // Smoothens player movement using linear interpolation.
   playerPosition.x = lerp(playerPosition.x, player.x * cellSize, 0.3);
   playerPosition.y = lerp(playerPosition.y, player.y * cellSize, 0.3);
 
-  drawMaze();
+  drawMaze(); // Draw the maze structure.
 
+  // Draw the player and finish line.
   fill(0, 255, 0);
   noStroke();
   rect(playerPosition.x, playerPosition.y, cellSize, cellSize);
@@ -76,6 +80,7 @@ function drawGame() {
   noStroke();
   rect(finishLine.x * cellSize, finishLine.y * cellSize, cellSize, cellSize);
 
+  // Display game stats.
   textSize(14);
   fill(0, 200, 0, 150);
   rect(width - 140, 5, 135, 60, 5);
@@ -85,27 +90,26 @@ function drawGame() {
   text(`High Score: ${highScore}`, width - 20, 25);
   text(`Moves Left: ${movesLeft}`, width - 20, 40);
 
+  // Check game state.
   if (player.x === finishLine.x && player.y === finishLine.y) {
-    highScore = max(highScore, level);
-    level++;
-    movesLeft = movesLimit;
-    generateNewLevel();
+    highScore = max(highScore, level); // Update high score.
+    level++; // Move to the next level.
+    movesLeft = movesLimit; // Reset moves.
+    generateNewLevel(); // Create a new maze.
   } else if (movesLeft <= 0) {
     textSize(24);
     textAlign(CENTER, CENTER);
     fill(255, 0, 0);
     text("Game Over!", width / 2, height / 2);
-    noLoop();
+    noLoop(); // Stop the game loop.
   } else {
-    movePlayer();
+    movePlayer(); // Handle player movement.
   }
 }
 
 function keyPressed() {
-  if (showInstructions) {
-    if (keyCode === ENTER) {
-      showInstructions = false;
-    }
+  if (showInstructions && keyCode === ENTER) {
+    showInstructions = false; // Start the game on ENTER key.
     return;
   }
 
@@ -114,7 +118,7 @@ function keyPressed() {
     if (key === 'A' || key === 'a') directions.left = true;
     if (key === 'S' || key === 's') directions.down = true;
     if (key === 'D' || key === 'd') directions.right = true;
-    movesLeft--;
+    movesLeft--; // Decrease moves for every input.
   }
 }
 
@@ -127,19 +131,19 @@ function positionButtons() {
 
 function windowResized() {
   resizeCanvas(600, 600);
-  positionButtons();
+  positionButtons(); // Reposition buttons after resize.
 }
 
 function generateNewLevel() {
-  maze = createMaze(floor(width / cellSize), floor(height / cellSize));
-  player = createVector(1, 1);
-  finishLine = createVector(maze[0].length - 2, maze.length - 2);
+  maze = createMaze(floor(width / cellSize), floor(height / cellSize)); // Create a new maze grid.
+  player = createVector(1, 1); // Reset player position.
+  finishLine = createVector(maze[0].length - 2, maze.length - 2); // Place finish line.
 
-  maze[1][1] = 0;
+  maze[1][1] = 0; // Ensure start and end points are open.
   maze[maze.length - 2][maze[0].length - 2] = 0;
 
   if (!isMazeSolvable()) {
-    generateNewLevel();
+    generateNewLevel(); // Regenerate the maze if unsolvable.
   }
 
   playerPosition = createVector(player.x * cellSize, player.y * cellSize);
@@ -148,73 +152,59 @@ function generateNewLevel() {
 function restartLevel() {
   player = createVector(1, 1);
   playerPosition = createVector(player.x * cellSize, player.y * cellSize);
-  movesLeft = movesLimit;
-  loop();
+  movesLeft = movesLimit; // Reset moves.
+  loop(); // Restart game loop.
 }
 
 function skipLevel() {
-  level++;
-  movesLeft = movesLimit;
-  generateNewLevel();
+  level++; // Move to the next level.
+  movesLeft = movesLimit; // Reset moves.
+  generateNewLevel(); // Generate a new maze.
   positionButtons();
-  loop();
+  loop(); // Restart game loop.
 }
 
 function createMaze(rows, cols) {
+  // Generate maze grid with walls (1) and paths (0).
   let maze = [];
   for (let i = 0; i < rows; i++) {
     maze[i] = [];
     for (let j = 0; j < cols; j++) {
-      if (i == 0 || j == 0 || i == rows - 1 || j == cols - 1) {
-        maze[i][j] = 1;
-      } else {
-        maze[i][j] = random(1) < 0.2 ? 1 : 0;
-      }
+      maze[i][j] = (i == 0 || j == 0 || i == rows - 1 || j == cols - 1) ? 1 : random(1) < 0.2 ? 1 : 0;
     }
   }
   return maze;
 }
 
 function isMazeSolvable() {
+  // Checks if the generated maze is solvable using breadth-first search.
   let queue = [createVector(1, 1)];
   let visited = Array.from({ length: maze.length }, () => Array(maze[0].length).fill(false));
   visited[1][1] = true;
 
-  let directions = [
-    createVector(0, -1),
-    createVector(1, 0),
-    createVector(0, 1),
-    createVector(-1, 0)
-  ];
+  let directions = [createVector(0, -1), createVector(1, 0), createVector(0, 1), createVector(-1, 0)];
 
   while (queue.length > 0) {
     let current = queue.shift();
 
-    if (current.x === maze[0].length - 2 && current.y === maze.length - 2) {
-      return true;
-    }
+    if (current.x === maze[0].length - 2 && current.y === maze.length - 2) return true;
 
     for (let dir of directions) {
       let next = createVector(current.x + dir.x, current.y + dir.y);
-
       if (next.x > 0 && next.y > 0 && next.x < maze[0].length - 1 && next.y < maze.length - 1 && !visited[next.y][next.x] && maze[next.y][next.x] === 0) {
         visited[next.y][next.x] = true;
         queue.push(next);
       }
     }
   }
-
   return false;
 }
 
 function drawMaze() {
+  // Draws the maze grid by coloring walls and paths.
   for (let i = 0; i < maze.length; i++) {
     for (let j = 0; j < maze[i].length; j++) {
-      if (maze[i][j] === 1) {
-        fill(0, 110, 0);
-      } else {
-        fill(0);
-      }
+      fill(maze[i][j] === 1 ? color(0, 110, 0) : color(0));
       noStroke();
       rect(j * cellSize, i * cellSize, cellSize, cellSize);
     }
@@ -222,32 +212,26 @@ function drawMaze() {
 }
 
 function movePlayer() {
+  // Moves the player based on input directions.
   if (directions.left) {
-    while (canMoveTo(player.x - 1, player.y)) {
-      player.x--;
-    }
+    while (canMoveTo(player.x - 1, player.y)) player.x--;
     directions.left = false;
   }
   if (directions.right) {
-    while (canMoveTo(player.x + 1, player.y)) {
-      player.x++;
-    }
+    while (canMoveTo(player.x + 1, player.y)) player.x++;
     directions.right = false;
   }
   if (directions.up) {
-    while (canMoveTo(player.x, player.y - 1)) {
-      player.y--;
-    }
+    while (canMoveTo(player.x, player.y - 1)) player.y--;
     directions.up = false;
   }
   if (directions.down) {
-    while (canMoveTo(player.x, player.y + 1)) {
-      player.y++;
-    }
+    while (canMoveTo(player.x, player.y + 1)) player.y++;
     directions.down = false;
   }
 }
 
 function canMoveTo(x, y) {
-  return maze[y] && maze[y][x] !== 1;
+  // Checks if the player can move to a given position.
+  return maze[y] && maze[y][x] === 0;
 }

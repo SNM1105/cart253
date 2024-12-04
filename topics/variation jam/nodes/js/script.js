@@ -1,10 +1,11 @@
+// Global variables for game state tracking
 let maze;
 let player;
 let playerPosition;
 let cellSize;
 let finishLine;
 let coins = [];
-let originalCoins = []; // New variable to store the original coin positions
+let originalCoins = [];
 let collectedCoins = 0;
 let requiredCoins = 3;
 let directions = { up: false, down: false, left: false, right: false };
@@ -13,19 +14,20 @@ let highScore = 0;
 let skipButton, restartButton;
 let showInstructions = true;
 
-// Timer-related variables
 let startTime;
-let timeLimit = 10; // 15 seconds
+let timeLimit = 10;
 let gameOver = false;
 
 // Movement speed control
-let moveDelay = 150; // Milliseconds between moves
+let moveDelay = 150;
 let lastMoveTime = 0;
 
+// Key game initialization: sets up canvas, buttons, and first level
 function setup() {
   createCanvas(600, 600);
   cellSize = 30;
   
+  // Create control buttons for game navigation
   skipButton = createButton('Skip Level');
   skipButton.mousePressed(skipLevel);
   skipButton.style('background-color', '#008000');
@@ -38,6 +40,7 @@ function setup() {
 
   positionButtons();
 
+  // Generate initial level
   generateNewLevel();
   textSize(16);
   textAlign(RIGHT, TOP);
@@ -70,10 +73,11 @@ function displayInstructions() {
   text("Press ENTER to start!", width / 2, height / 4 + 310);
 }
 
+// Main game drawing and logic loop
 function drawGame() {
   background(0);
 
-  // Smooth player movement
+  // Smooth player movement animation
   playerPosition.x = lerp(playerPosition.x, player.x * cellSize, 0.3);
   playerPosition.y = lerp(playerPosition.y, player.y * cellSize, 0.3);
 
@@ -112,7 +116,7 @@ function drawGame() {
     displayGameOver();
   }
 
-  // Check for level completion
+  // Check game progression conditions
   if (collectedCoins >= requiredCoins && 
       player.x === finishLine.x && player.y === finishLine.y) {
     highScore = max(highScore, level);
@@ -133,6 +137,7 @@ function displayGameOver() {
   text("Game Over", width / 2, height / 2 + 20);
 }
 
+// Generate a new random maze with constraints
 function generateNewLevel() {
   maze = createMaze(floor(width / cellSize), floor(height / cellSize));
   player = createVector(1, 1);
@@ -167,6 +172,7 @@ function generateNewLevel() {
     originalCoins.push(createVector(coinPos.x, coinPos.y)); // Store original coin position
   }
 
+  // Ensure the generated maze is solvable
   if (!isMazeSolvable()) {
     generateNewLevel();
   }
@@ -249,6 +255,7 @@ function checkCoinCollection() {
   }
 }
 
+// Create a random maze grid
 function createMaze(rows, cols) {
   let maze = [];
   for (let i = 0; i < rows; i++) {
@@ -264,6 +271,7 @@ function createMaze(rows, cols) {
   return maze;
 }
 
+// Check if the maze has a valid path to collect all coins and reach the finish
 function isMazeSolvable() {
   let queue = [createVector(1, 1)];
   let visited = Array.from({ length: maze.length }, () => Array(maze[0].length).fill(false));
@@ -351,6 +359,7 @@ function drawMaze() {
   }
 }
 
+// Handle player movement based on keyboard input
 function movePlayer() {
   // Add a delay between moves to slow down player speed
   if (millis() - lastMoveTime < moveDelay) {
