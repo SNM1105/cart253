@@ -18,10 +18,12 @@ function setup() {
   skipButton = createButton('Skip Level');
   skipButton.position(width - 100, 10);
   skipButton.mousePressed(skipLevel);
+  skipButton.style('background-color', '#008000');
+  skipButton.style('color', 'black');
 }
 
 function draw() {
-  background(220);
+  background(0);
   
   // Draw maze
   drawMaze();
@@ -32,14 +34,19 @@ function draw() {
   rect(player.x * cellSize, player.y * cellSize, cellSize, cellSize);
   
   // Draw finish line
-  fill(255, 0, 0);
+  fill(0, 174, 255);
   noStroke();
   rect(finishLine.x * cellSize, finishLine.y * cellSize, cellSize, cellSize);
 
+  // Draw stats background
+  fill(0, 200, 0, 150);
+  rect(width - 140, 5, 135, 60, 5);
+
   // Draw Level and High Score
   fill(0);
-  text(`Level: ${level}`, width - 10, 10);
-  text(`High Score: ${highScore}`, width - 10, 30);
+  textAlign(RIGHT, TOP);
+  text(`Level: ${level}`, width - 20, 10);
+  text(`High Score: ${highScore}`, width - 20, 25);
 
   // Check for win
   if (player.x === finishLine.x && player.y === finishLine.y) {
@@ -50,7 +57,7 @@ function draw() {
     level++;
     generateNewLevel();
   } else {
-    // Move player continuously in the direction until collision w/ wall
+    // Move player in the direction until collision w/ wall
     movePlayer();
   }
 }
@@ -124,9 +131,9 @@ function drawMaze() {
   for (let i = 0; i < maze.length; i++) {
     for (let j = 0; j < maze[i].length; j++) {
       if (maze[i][j] === 1) {
-        fill(0);
+        fill(0, 110, 0);
       } else {
-        fill(255);
+        fill(0);
       }
       noStroke();
       rect(j * cellSize, i * cellSize, cellSize, cellSize);
